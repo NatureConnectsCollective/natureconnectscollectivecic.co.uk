@@ -1050,37 +1050,28 @@
       </div>
     </div>
 
-    <div data-fs-success style="display:none; color: var(--forest); font-size:.9rem; font-weight:400; padding:.8rem; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--sage);">
-      Thank you. We'll be in touch within two working days.
-    </div>
-    <div data-fs-error style="display:none; color:#c0392b; font-size:.85rem; padding:.6rem; background:#fff0f0; border-radius:8px; border-left: 3px solid #c0392b;"></div>
-
     <form class="contact-form" id="contact-form">
-      <input type="hidden" name="_subject" value="Website Contact Form">
       <div class="form-row">
         <div class="form-group">
           <label for="fname">First Name</label>
           <input type="text" id="fname" name="first_name" placeholder="Jane" required data-fs-field>
-          <span data-fs-error="first_name" style="color:#c0392b;font-size:.8rem;"></span>
         </div>
         <div class="form-group">
           <label for="lname">Last Name</label>
           <input type="text" id="lname" name="last_name" placeholder="Smith" required data-fs-field>
-          <span data-fs-error="last_name" style="color:#c0392b;font-size:.8rem;"></span>
         </div>
       </div>
       <div class="form-group">
         <label for="email">Email Address</label>
         <input type="email" id="email" name="email" placeholder="jane@example.com" required data-fs-field>
-        <span data-fs-error="email" style="color:#c0392b;font-size:.8rem;"></span>
       </div>
       <div class="form-group">
         <label for="org">Organisation (if applicable)</label>
-        <input type="text" id="org" name="organisation" placeholder="School, charity, company..." data-fs-field>
+        <input type="text" id="org" name="organisation" placeholder="School, charity, company...">
       </div>
       <div class="form-group">
         <label for="interest">I am enquiring as a...</label>
-        <select id="interest" name="enquiry_type" data-fs-field>
+        <select id="interest" name="enquiry_type">
           <option value="">Please select</option>
           <option>Primary School</option>
           <option>Family</option>
@@ -1092,17 +1083,16 @@
       </div>
       <div class="form-group">
         <label for="message">Your Message</label>
-        <textarea id="message" name="message" placeholder="Tell us a bit about what you're looking for..." required data-fs-field></textarea>
-        <span data-fs-error="message" style="color:#c0392b;font-size:.8rem;"></span>
+        <textarea id="message" name="message" placeholder="Tell us a bit about what you're looking for..." required></textarea>
       </div>
-      <button type="submit" class="form-submit" data-fs-submit-btn>Send Message →</button>
+      <button type="submit" class="form-submit" id="form-btn">Send Message →</button>
+      <div id="form-success" style="display:none; color: var(--forest); font-size:.9rem; font-weight:400; padding:.8rem; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--sage);">
+        Thank you. We'll be in touch within two working days.
+      </div>
+      <div id="form-error" style="display:none; color:#c0392b; font-size:.85rem; padding:.8rem; background:#fff0f0; border-radius:8px; border-left: 3px solid #c0392b;">
+        Something went wrong — please try again or email us directly at hello@natureconnectscollectivecic.co.uk
+      </div>
     </form>
-
-    <script>
-      window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-      formspree('initForm', { formElement: '#contact-form', formId: 'xykrkvok' });
-    </script>
-    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
   </div>
 </section>
 
@@ -1174,7 +1164,36 @@
   });
 
   // Form handler
-  </script>
+  // Contact form — Formspree Ajax
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('form-btn');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      try {
+        const response = await fetch('https://formspree.io/f/xykrkvok', {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          contactForm.reset();
+          btn.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          btn.textContent = 'Send Message →';
+          btn.disabled = false;
+          document.getElementById('form-error').style.display = 'block';
+        }
+      } catch {
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+        document.getElementById('form-error').style.display = 'block';
+      }
+    });
+  }
 </script>
 </body>
 </html>
