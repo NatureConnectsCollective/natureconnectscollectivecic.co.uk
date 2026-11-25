@@ -1,0 +1,12 @@
+{
+  "name": "Nature Connects Collective CIC",
+  "short_name": "Nature Connects",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#1D4A3E",
+  "background_color": "#F5F0E8",
+  "display": "browser",
+  "start_url": "/"
+}
