@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://natureconnectscollectivecic.co.uk/sitemap.xml
